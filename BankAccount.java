@@ -3,6 +3,7 @@ public class BankAccount {
     private int balance;
     private String accountType;
     private Customer customer;
+    private int TRANSACTION_LIMIT = 20000;
 
     public BankAccount(Long accountNumber, String accountType, Customer customer) {
         this.accountNumber = accountNumber;
@@ -11,8 +12,8 @@ public class BankAccount {
     }
 
     public void deposit(int amount) {
-        if (amount <= 0) {
-            System.out.println("Amount must be greater than 0");
+        if (amount <= 0 || amount > TRANSACTION_LIMIT) {
+            System.out.println("Amount must be between 0 - " + TRANSACTION_LIMIT);
             return;
         }
         System.out.println("Deposit : " + amount);
@@ -21,10 +22,16 @@ public class BankAccount {
     }
 
     public void withdraw(int amount) {
-        if (amount <= 0) {
-            System.out.println("Amount must be greater than 0!");
+        if (amount <= 0 || amount > TRANSACTION_LIMIT) {
+            System.out.println("Amount must be between 0 - " + TRANSACTION_LIMIT);
             return;
         }
+
+        if (amount > this.balance) {
+            System.out.println("Insufficient balance!");
+            return;
+        }
+
         System.out.println("Withdraw : " + amount);
         this.balance -= amount;
         System.out.println("New Balance : " + this.balance);

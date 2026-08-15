@@ -8,6 +8,6 @@ public class Main {
 
         account.deposit(2000);
 
-        account.withdraw(100);
+        account.withdraw(100000);
     }
 }
