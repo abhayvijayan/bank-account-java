@@ -1,9 +1,16 @@
-public class BankAccount {
-    private Long accountNumber;
+interface Transactionable {
+
+    int TRANSACTION_LIMIT = 20000;
+
+    void withdraw(int amount);
+    void deposit(int amount);
+}
+
+abstract class BankAccount implements Transactionable {
+    private long accountNumber;
     private int balance;
     private String accountType;
     private Customer customer;
-    private int TRANSACTION_LIMIT = 20000;
 
     public BankAccount(Long accountNumber, String accountType, Customer customer) {
         this.accountNumber = accountNumber;
@@ -11,6 +18,7 @@ public class BankAccount {
         this.customer = customer;
     }
 
+    @Override
     public void deposit(int amount) {
         if (amount <= 0 || amount > TRANSACTION_LIMIT) {
             System.out.println("Amount must be between 0 - " + TRANSACTION_LIMIT);
@@ -21,24 +29,15 @@ public class BankAccount {
         System.out.println("New balance : " + this.balance);
     }
 
-    public void withdraw(int amount) {
-        if (amount <= 0 || amount > TRANSACTION_LIMIT) {
-            System.out.println("Amount must be between 0 - " + TRANSACTION_LIMIT);
-            return;
-        }
+    @Override
+    public abstract void withdraw(int amount);
 
-        if (amount > this.balance) {
-            System.out.println("Insufficient balance!");
-            return;
-        }
-
-        System.out.println("Withdraw : " + amount);
-        this.balance -= amount;
-        System.out.println("New Balance : " + this.balance);
+    protected int getBalance() {
+        return this.balance;
     }
 
-    public int getBalance() {
-        return this.balance;
+    protected void setBalance(int balance) {
+        this.balance = balance;
     }
 
     public void displayAccountDetails() {
